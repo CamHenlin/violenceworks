@@ -15,7 +15,13 @@ const logRequest = (req, res, next) => {
 };
 app.use(logRequest);
 
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://api.violenceworks.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Implement endpoint for retrieving product data

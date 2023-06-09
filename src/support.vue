@@ -78,7 +78,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    top: 130px;
   
     border-bottom: #d40000 1px solid;
   }

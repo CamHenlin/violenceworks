@@ -11,16 +11,16 @@
       </div>
     </div>
     <ul class="nav-list" :class="{ 'open': showMenu }">
-      <li><router-link @click.native="toggleMenu" to="/">Home</router-link></li>
-      <li><router-link @click.native="toggleMenu" to="/about">About</router-link></li>
-      <li><router-link @click.native="toggleMenu" to="/products">Products</router-link></li>
+      <li><router-link @click.native="killMenu" to="/">Home</router-link></li>
+      <li><router-link @click.native="killMenu" to="/about">About</router-link></li>
+      <li><router-link @click.native="killMenu" to="/products">Products</router-link></li>
       <li>
-        <router-link to="/checkout">
+        <router-link  @click.native="killMenu" to="/checkout">
           Checkout
         </router-link>
         <span v-if="cartQuantity" class="cart-quantity">{{ cartQuantity }}</span>
       </li>
-      <li><router-link @click.native="toggleMenu" to="/support">Support</router-link></li>
+      <li><router-link @click.native="killMenu" to="/support">Support</router-link></li>
     </ul>
   </nav>
 </template>
@@ -48,6 +48,10 @@ export default {
     // window.removeEventListener("resize", this.updateMenuDisplay);
   },
   methods: {
+    killMenu () {
+      this.showMenu = false;
+      window.scrollTo(0, 0);
+    },
     toggleMenu() {
       this.showMenu = !this.showMenu;
 
@@ -171,6 +175,26 @@ nav a {
   transition: all 0.2s ease-in-out;
   border: 1px #d40000 solid;
 }
+@media (max-width: 960px) {
+  nav a {
+    
+  padding: 0.5rem 0.2rem;
+  }
+}
+
+@media (max-width: 801px) {
+  nav ul li {
+    
+  margin: 0 0.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul li {
+    
+  margin: 0 1rem;
+  }
+}
 
 nav a:hover {
   background-color: #b30000;
@@ -188,7 +212,7 @@ nav a:hover {
     flex-direction: column;
     width: 100%;
     position: absolute;
-    top: 130px;
+    top: 90px;
     left: 0;
     background-color: #fff;
     padding: 1rem 2rem;

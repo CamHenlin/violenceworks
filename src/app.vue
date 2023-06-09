@@ -4,7 +4,9 @@
   </metainfo>
     <div id="app">
       <Nav />
-      <router-view />
+      <div class="page">
+        <router-view />
+      </div>
       <Footer />
     </div>
   </template>
@@ -26,6 +28,31 @@
   </script>
   
   <style>
+
+  .page {
+    position: relative;
+    top: 130px;
+  }
+
+
+  @media (max-width: 960px) {
+    .page {
+      top: 90px;
+    }
+  }
+  /* 498x100 */
+  @media (max-width: 480px) {
+    .page {
+        top: 90px;
+      }
+  }
+
+  @media (max-width: 320px) {
+    .page {
+        top: 90px;
+      }
+  }
+
 #app {
   font-family: 'Open Sans', sans-serif;
   background-color: #6c6c6c;
@@ -92,7 +119,7 @@
   main {
     background-color: #fff;
     color: black;
-    padding: 10rem 3rem 5rem 3rem;
+    padding: 3rem 3rem 5rem 3rem;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }

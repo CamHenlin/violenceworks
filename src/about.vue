@@ -5,7 +5,7 @@
         <section class="about">
           <h1>{{ about.title }}</h1>
           <p v-html="about.description"></p>
-          <img :src="about.image" alt="About Image">
+          <img class="about-image" :src="about.image" alt="About Image">
         </section>
       </main>
     </div>
@@ -47,7 +47,6 @@ For any custom automotive engineering needs, feel free to contact me. I'm excite
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  top: 130px;
 
   border-bottom: #d40000 1px solid;
 }
