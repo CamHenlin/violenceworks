@@ -3,7 +3,7 @@
     <section class="hero">
       <Carousel :images="heroImages">
         <template #text>
-          <div class="hero-text">
+          <div class="hero-text" style="position: relative; z-index: 1000;">
             <h1>Start Your Build Today</h1>
             <router-link to="/products" class="btn-shop-now"><b>Shop Now</b></router-link>
           </div>

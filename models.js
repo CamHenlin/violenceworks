@@ -92,8 +92,34 @@ const SupportDetails = sequelize.define("support_details", {
   }
 });
 
+const CheckoutDetails = sequelize.define('checkout_details', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  shippingDetails: {
+    type: Sequelize.JSON,
+    allowNull: false
+  },
+  cartItems: {
+    type: Sequelize.JSON,
+    allowNull: false
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW
+  }
+})
+
 sequelize.sync().then(() => {
   console.log("Tables have been created");
 });
 
-module.exports = { Product, ShippingDetails, SupportDetails };
+module.exports = { Product, ShippingDetails, SupportDetails, CheckoutDetails };

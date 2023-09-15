@@ -50,6 +50,14 @@
           <input type="text" id="name" v-model="shippingDetails.name" class="form-input"/>
         </div>
         <div>
+          <label for="email">Email Address:</label>
+          <input type="text" id="email" v-model="shippingDetails.email" class="form-input"/>
+        </div>
+        <div>
+          <label for="phone">Phone Number:</label>
+          <input type="text" id="phone" v-model="shippingDetails.phone" class="form-input"/>
+        </div>
+        <div>
           <label for="address">Address:</label>
           <input type="text" id="address" v-model="shippingDetails.address" class="form-input"/>
         </div>
@@ -66,13 +74,16 @@
           <input type="text" id="zip" v-model="shippingDetails.zip" class="form-input"/>
         </div>
       </form>
-      <CheckoutButton class="stripe-checkout-button"/>
+      <!-- <CheckoutButton class="stripe-checkout-button"/>-->
+      <!-- add a simple submit form button for now -->
+      <button type="submit" @click="sendCheckoutSubmission" class="stripe-checkout-button">Checkout</button>
       <p class="checkout-description">By clicking the checkout button, you will be taken to the secure checkout page to complete your purchase. Your shipping details will be used to calculate shipping costs and complete the transaction.</p>
     </main>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import CheckoutButton from './stripe-checkout.vue';
 
 export default {
@@ -90,6 +101,8 @@ export default {
     return {
       shippingDetails: {
         name: '',
+        email: '',
+        phone: '',
         address: '',
         city: '',
         state: '',
@@ -108,6 +121,23 @@ export default {
     },
     updateQuantity(item) {
       localStorage.setItem('cart', JSON.stringify(this.cartItems))
+    },
+    async sendCheckoutSubmission () {
+
+      // send the shippingDetails and cartItems to the server endpoint /api/checkoutsubmission and then clear the cart
+      await axios.post(`${process.env.VUE_APP_API_URL}/api/checkoutsubmission`, { shippingDetails: this.shippingDetails, cartItems: this.cartItems })
+        .then(response => {
+          alert(`done`)
+          // clear the cart
+          this.cartItems = []
+          localStorage.setItem('cart', JSON.stringify(this.cartItems))
+          // redirect to the success page
+          this.$router.push('/success')
+        })
+        .catch(err => {
+          alert(`error`)
+          console.log(err)
+        })
     }
   },
   computed: {

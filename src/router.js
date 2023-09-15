@@ -6,6 +6,7 @@ import Search from './search.vue';
 import Product from './product.vue';
 import Products from './products.vue';
 import Checkout from './checkout.vue';
+import Success from './success.vue';
 import Support from './support.vue';
 
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
   { path: '/products/:category', component: Products },
   { path: '/products/:category/:subCategory', component: Products },
   { path: '/checkout', component: Checkout },
+  { path: '/success', component: Success },
   { path: '/support', component: Support }
 ];
 

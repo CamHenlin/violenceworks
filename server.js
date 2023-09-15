@@ -1,9 +1,11 @@
 const express = require("express");
 const stripe = require("stripe")("YOUR_STRIPE_SECRET_KEY");
 const cors = require("cors");
-const { Product, ShippingDetails, SupportDetails } = require("./models");
+const { Product, ShippingDetails, SupportDetails, CheckoutDetails } = require("./models");
 
 const app = express();
+
+const SUPPORT_SECRET = process.env.SUPPORT_SECRET || `secret`
 
 const logRequest = (req, res, next) => {
   const time = new Date().toLocaleString();
@@ -13,8 +15,9 @@ const logRequest = (req, res, next) => {
   }
   next();
 };
+
 app.use(logRequest);
-var allowedOrigins = ['https://www.violenceworks.com', 'https://violenceworks.com', 'https://api.violenceworks.com'];
+var allowedOrigins = ['https://www.violenceworks.com', 'https://violenceworks.com', 'https://api.violenceworks.com', 'http://127.0.0.1', 'http://localhost:8080'];
 
 var corsOptions = {
   origin: function (origin, callback) {
@@ -29,6 +32,19 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.post('/api/checkoutsubmission', async (req, res) => {
+  const { shippingDetails, cartItems } = req.body
+
+  try {
+    // Save the checkout information to the database using the CheckoutDetails model
+    await CheckoutDetails.create({ shippingDetails, cartItems })
+    res.status(200).send('Checkout information saved successfully')
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Error saving checkout information to database')
+  }
+})
 
 // Implement endpoint for retrieving product data
 app.get("/api/products", async (req, res) => {
@@ -116,6 +132,40 @@ app.post("/api/support", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// get the support details, auth header protected with key set at .env.SUPPORT_SECRET
+app.get("/api/support", async (req, res) => {
+
+  // check if auth header matches SUPPORT_SECRET
+  if (req.headers.authorization !== SUPPORT_SECRET) {
+    res.status(401).json({ error: "Not authorized" });
+    return;
+  }
+
+  try {
+    const supportDetails = await SupportDetails.findAll();
+    res.json({ supportDetails });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/orders', async (req, res) => {
+  // Check for the support secret in the request headers
+  const secret = req.headers['x-support-secret']
+  if (secret !== SUPPORT_SECRET) {
+    return res.status(401).send('Unauthorized')
+  }
+
+  try {
+    // Retrieve all orders from the database using the Order model
+    const orders = await CheckoutDetails.findAll()
+    res.status(200).json(orders)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Error retrieving orders from database')
+  }
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0', () => {

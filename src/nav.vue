@@ -2,7 +2,7 @@
   <nav>
     <div class="nav-header">
       <div class="nav-brand">
-        <img src="../images/logosmall.png" alt="Logo" class="nav-logo" />
+        <router-link class="nav-brand-link" @click.native="killMenu" to="/"><img src="../images/logosmall.png" alt="Logo" class="nav-logo" /></router-link>
       </div>
       <div class="toggle-menu" @click="toggleMenu">
         <div class="hamburger"></div>
@@ -254,6 +254,17 @@ nav a:hover {
     height: auto;
     width: 200px;
   }
+}
+
+.nav-brand-link {
+  display: inline-block;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 
 </style>
